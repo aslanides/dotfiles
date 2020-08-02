@@ -1,0 +1,24 @@
+# Sets up command prompt in the following format:
+#
+# ┌─[user@host]─[branch]─[current/working/directory]
+# └──╼ 
+#
+
+git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+current_path() {
+  local path=${PWD//$HOME/\~}
+  echo -e "${path}"
+}
+
+# Some useful color aliases.
+BRIGHTGREEN="\e[1;32m"
+GREEN="\e[0;32m"
+YELLOW="\e[93m"
+RED="\e[1;31m"
+BLUE="\e[0;36m"
+NONE="\e[0m"
+
+export PS1="┌─[${YELLOW}\u${NONE}@${RED}\h${NONE}]─[${BRIGHTGREEN}\$(git_branch)${NONE}]─[${GREEN}\$(current_path)${NONE}]\n└──╼ "
